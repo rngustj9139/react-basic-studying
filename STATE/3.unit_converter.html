@@ -18,27 +18,87 @@
    <script type="text/babel"> // 브라우저가 jsx를 이해하게 해준다 (but 이방법은 느려서 잘 안쓰임) 
         const root = document.getElementById("root")
 
-        function App() {
+        function MinutesToHours() {
             let [minutes, setMinutes] = React.useState(0)
+            let [flipped, setFlipped] = React.useState(false);
 
             const onChange = (event) => { // event 안에 사용자가 input창에 입력한 값이 들어있다.
                 setMinutes(event.target.value)
             }
+
+            const Reset = () => {
+                setMinutes(0)
+            }
+
+            const Flipped = () => {
+                Reset()
+                setFlipped((current) => !current) // current는 flipped이다. !current를 리턴한다.
+            }
             
             return (
                 <div>
-                    <h1 className="h1">Super Converter</h1>
+                    <div>
+                        <label htmlFor="minutes">Minutes</label>
+                        <input type="number" id="minutes" placeholder="Minutes" 
+                            value={flipped ? minutes * 60 : minutes} 
+                            onChange={onChange} 
+                            disabled={flipped}
+                        /> {/* value={minutes}은 input의 value와 useState의 첫번째 변수를 같게해준다. onChange는 input창에 값의 변경이 일어날때마다 특정 함수를 실행시킨다. */}
+                    </div>
+
+                    <div>
+                        <h4>You want to convert {minutes} minutes to ? hours </h4>
+                    </div>
+
+                    <div>
+                        <label htmlFor="hours">Hours</label>
+                        <input type="number" id="hours" placeholder="Hours" 
+                            value={flipped ? minutes : Math.round(minutes / 60)} 
+                            onChange={onChange} 
+                            disabled={!flipped}
+                        /> {/* value={minutes}때문에 minutes input 칸에 값을 입력하면 hours의 input칸에 그 값이 나타나게 된다. value={minutes / 60}하면 분이 시로 변환된다. */}
+                    </div>
+
+                    <br />
                     
-                    <label htmlFor="minutes">Minutes</label>
-                    <input type="number" id="minutes" placeholder="Minutes" value={minutes} onChange={onChange}/> {/* value={minutes}은 input의 value와 useState의 첫번째 변수를 같게해준다. onChange는 input창에 값의 변경이 일어날때마다 특정 함수를 실행시킨다. */}
-                    
-                    <h4>You want to convert {minutes}</h4>
-                    
-                    <label htmlFor="hours">Hours</label>
-                    <input type="number" id="hours" placeholder="Hours" />
+                    <button onClick={Reset}>Reset</button>
+                    <button onClick={Flipped}>{flipped ? "Turn back" : "Flip"}</button>
                 </div>
             )
         } 
+
+        function KmToMiles() {
+
+            return (
+                <h3>Km To Miles</h3>
+            )
+        }
+
+        function App() {
+            let [index, setIndex] = React.useState("xx")
+
+            const onSelect = (event) => {
+                setIndex(event.target.value)
+            }
+
+            return (
+                <div>
+                    <h1 className="h1">Super Converter</h1>
+
+                    <select onChange={onSelect} value={index}>
+                        <option value="xx">Select your unit</option>
+                        <option value="0">Minutes & Hours</option>
+                        <option value="1">Km & Miles</option>
+                    </select>
+
+                    <hr />
+
+                    {index === "xx" ? "Please select your unit" : null}
+                    {index === "0" ? <MinutesToHours /> : null} {/* 중괄호를 써야 자바스크립트 코드를 쓸 수 있다. */}
+                    {index === "1" ? <KmToMiles /> : null}
+                </div>
+            )
+        }
 
         ReactDOM.render(<App />, root) // 리엑트로 생성한 html요소를 body안에 배치(렌더링)시키는데 위치를 root로 잡는다. (먼저 root를 가져와야한다.)
    </script>
