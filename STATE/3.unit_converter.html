@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+    <!-- 리엑트를 사용하려면 아래 두개의 파일을 CDN형식으로 불러와야함 (리엑트 파일, 리엑트-dom 파일)-->
+   <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script> <!-- 리엑트 엔진 -->
+   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script> <!-- 리엑트 돔은 생성한 react element를 html body에 둘 수 있도록 해준다.-->
+   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> <!-- 브라우저가 jsx를 이해하게 해준다 (but 이방법은 느려서 잘 안쓰임) -->
+
+   <script type="text/babel"> // 브라우저가 jsx를 이해하게 해준다 (but 이방법은 느려서 잘 안쓰임) 
+        const root = document.getElementById("root")
+
+        function App() {
+            let [minutes, setMinutes] = React.useState(0)
+
+            const onChange = (event) => { // event 안에 사용자가 input창에 입력한 값이 들어있다.
+                setMinutes(event.target.value)
+            }
+            
+            return (
+                <div>
+                    <h1 className="h1">Super Converter</h1>
+                    
+                    <label htmlFor="minutes">Minutes</label>
+                    <input type="number" id="minutes" placeholder="Minutes" value={minutes} onChange={onChange}/> {/* value={minutes}은 input의 value와 useState의 첫번째 변수를 같게해준다. onChange는 input창에 값의 변경이 일어날때마다 특정 함수를 실행시킨다. */}
+                    
+                    <h4>You want to convert {minutes}</h4>
+                    
+                    <label htmlFor="hours">Hours</label>
+                    <input type="number" id="hours" placeholder="Hours" />
+                </div>
+            )
+        } 
+
+        ReactDOM.render(<App />, root) // 리엑트로 생성한 html요소를 body안에 배치(렌더링)시키는데 위치를 root로 잡는다. (먼저 root를 가져와야한다.)
+   </script>
+</html>
